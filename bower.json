@@ -11,7 +11,9 @@
     "SpecRunner.html",
     "spec",
     "package.json",
-    "gulpFile.js"
+    "gulpFile.js",
+    "index.html",
+    "application.js"
   ],
   "dependencies": {},
   "devDependencies": {
