@@ -1,7 +1,7 @@
 ;(function(sprite, undefined){
     /* A flood fill tool for the sprite editor */
-    sprite.flood = {};
-    sprite.flood.fill = {};
+    var flood = sprite.flood = {};
+    var fill = flood.fill = {};
 
     var Point = function(x, y) {
         this.x = x;
@@ -30,7 +30,7 @@
         this.visitedPoints[point.x][point.y] = true;
     }
 
-    var Flooder = sprite.flood.fill.Flooder = function(model){
+    var Flooder = fill.Flooder = function(model){
         this.model = model;
     };
     Flooder.prototype.flood = function(x, y) {
@@ -54,4 +54,37 @@
             this.model.paintPixel(point.x, point.y);
         }.bind(this));
     }
+
+    var Controller = function(model, view, canvas){
+        this.flooder = new Flooder(model);
+        this.model = model;
+        this.view = view;
+        this.canvas = canvas;
+        this.boundReceiveFloodEvent = this.receiveFloodEvent.bind(this);
+    };
+    Controller.prototype.startDrawing = function(event){
+        this.boundReceiveFloodEvent(event);
+    };
+    Controller.prototype.stopDrawing = function(event){
+        /* do nothing */
+    };
+    Controller.prototype.receiveFloodEvent = function(event){
+        var x = event.clientX - this.view.horizontalOffset - this.canvas.offsetLeft;
+        var y = event.clientY - this.view.verticalOffset - this.canvas.offsetTop;
+
+        var column = Math.floor(x/this.view.pixelSize);
+        var row = Math.floor(y/this.view.pixelSize);
+
+        try {
+            this.flooder.flood(column, row);
+        } catch(e) {
+            if (!e.message.match(/^Not within bounds/)) {
+                throw e;
+            }
+        }
+    };
+
+    fill.controllerFor = function(model, view, canvas){
+        return new Controller(model, view, canvas);
+    };
 })(window.sprite = window.sprite || {})
