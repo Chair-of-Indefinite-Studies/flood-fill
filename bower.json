@@ -1,0 +1,20 @@
+{
+  "name": "cois-flood-fill",
+  "version": "1.0.0",
+  "license": "MIT",
+  "description": "A flood fill tool for the sprite editor",
+  "main": "cois-flood-fill.js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "SpecRunner.html",
+    "spec",
+    "package.json",
+    "gulpFile.js"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "jasmine": "~2.1.3"
+  }
+}
